@@ -13,6 +13,8 @@ To view accounts for a given customerId: http://localhost:8687/account/customer/
 To view accounts for a given productId: http://localhost:8687/account/product/1
 
 ***POST API***
+
+
 To create account: http://localhost:8687/account/account 
 
 <sub> 
