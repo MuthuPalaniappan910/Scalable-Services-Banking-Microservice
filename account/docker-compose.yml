@@ -32,8 +32,10 @@ services:
     container_name: account-app
     environment:
       SERVICE_PRECONDITION: "account-mysql:3306"
+      DB_HOST: account-mysql
+      DB_PORT: 3306
     ports:
-      - 8687:8687
+      - 9001:9001
     depends_on:
       - mysql
     restart: on-failure

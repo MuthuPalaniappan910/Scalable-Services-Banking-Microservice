@@ -1,0 +1,112 @@
+version: '3.3'
+
+networks:
+  bank:
+    driver: bridge
+
+services:
+
+  ### MySQL Container
+  accountmysql:
+    build:
+      context: ./account
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_DATABASE=${MYSQL_ACCOUNT_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    container_name: account-mysql
+    ports:
+      - 3306:3306
+    restart: always
+    networks:
+      - bank
+
+  account:
+    image: account
+    build:
+      context: ./account
+      dockerfile: Dockerfile-account
+    container_name: account-app
+    environment:
+      SERVICE_PRECONDITION: "account-mysql:3306"
+      DB_HOST: account-mysql
+      DB_PORT: 3306
+    ports:
+      - 9001:9001
+    depends_on:
+      - accountmysql
+    restart: on-failure
+    networks:
+      - bank
+
+  ### MySQL Container
+  customermysql:
+    build:
+      context: ./customer
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_DATABASE=${MYSQL_CUSTOMER_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    container_name: customer-mysql
+    ports:
+      - 3307:3306
+    restart: always
+    networks:
+      - bank
+
+  customer:
+    image: customer
+    build:
+      context: ./customer
+      dockerfile: Dockerfile-customer
+    container_name: customer-app
+    environment:
+      SERVICE_PRECONDITION: "customer-mysql:3307"
+      DB_HOST: customer-mysql
+      DB_PORT: 3306
+    ports:
+      - 9002:9002
+    depends_on:
+      - customermysql
+    restart: on-failure
+    networks:
+      - bank
+
+  ### MySQL Container
+  productmysql:
+    build:
+      context: ./product
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_DATABASE=${MYSQL_PRODUCT_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    container_name: product-mysql
+    ports:
+      - 3308:3306
+    restart: always
+    networks:
+      - bank
+
+  product:
+    image: product
+    build:
+      context: ./product
+      dockerfile: Dockerfile-product
+    container_name: product-app
+    environment:
+      SERVICE_PRECONDITION: "product-mysql:3308"
+      DB_HOST: product-mysql
+      DB_PORT: 3306
+    ports:
+      - 8687:8687
+    depends_on:
+      - productmysql
+    restart: on-failure
+    networks:
+      - bank

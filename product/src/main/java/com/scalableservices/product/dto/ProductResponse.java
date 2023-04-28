@@ -4,17 +4,17 @@ import java.util.List;
 
 public class ProductResponse {
 	
-	private Long categoryID;
+	private Long categoryId;
 	private String category;
 	
 	private List<ProductsList> products;
 
-	public Long getCategoryID() {
-		return categoryID;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategoryID(Long categoryID) {
-		this.categoryID = categoryID;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getCategory() {

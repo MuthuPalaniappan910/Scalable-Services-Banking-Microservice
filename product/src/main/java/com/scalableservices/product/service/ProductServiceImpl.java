@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
 			productsLists.add(productsList);
 		});
 		productResponse.setCategory(category.getCategory());
-		productResponse.setCategoryID(categoryId);
+		productResponse.setCategoryId(categoryId);
 		productResponse.setProducts(productsLists);
 		return productResponse;
 	}

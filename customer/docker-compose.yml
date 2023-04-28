@@ -1,9 +1,9 @@
 version: '3.3'
 
 networks:
-  product:
+  customer:
     driver: bridge
-    name: productnetwork
+    name: customernetwork
 
 services:
 
@@ -17,26 +17,27 @@ services:
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    container_name: product-mysql
+    container_name: customer-mysql
     ports:
       - 3306:3306
     restart: always
     networks:
-      - product
+      - customer
 
-  product:
-    image: product
+  customer:
+    image: customer
     build:
       context: ./
-      dockerfile: Dockerfile-product
-    container_name: product-app
+      dockerfile: Dockerfile-customer
+    container_name: customer-app
     environment:
-      SERVICE_PRECONDITION: "product-mysql:3306"
-      DB_HOST: product-mysql
+      SERVICE_PRECONDITION: "customer-mysql:3306"
+      DB_HOST: customer-mysql
+      DB_PORT: 3306
     ports:
-      - 8687:8687
+      - 9002:9002
     depends_on:
       - mysql
     restart: on-failure
     networks:
-      - product
+      - customer
