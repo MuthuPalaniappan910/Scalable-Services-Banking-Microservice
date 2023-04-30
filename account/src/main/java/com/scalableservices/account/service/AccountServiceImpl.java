@@ -3,14 +3,23 @@ package com.scalableservices.account.service;
 import com.scalableservices.account.dto.AccountRequest;
 import com.scalableservices.account.exception.CreateAccountException;
 import com.scalableservices.account.model.Account;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.scalableservices.account.dto.AccountResponse;
+import com.scalableservices.account.dto.CategoryResponse;
 import com.scalableservices.account.exception.NoAccountFoundException;
 import com.scalableservices.account.repository.AccountRepository;
 
@@ -20,12 +29,27 @@ public class AccountServiceImpl implements AccountService {
 	public static final String NO_ACCOUNT_FOUND = "No Account Found";
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public List<AccountResponse> getAccounts() throws NoAccountFoundException {
+		
 		List<AccountResponse> accountResponses = new ArrayList<>();
 		List<Account> accounts = accountRepository.findAll();
+		//Create rest template to establish Communication b/w MSA's
+		//establishCommunication();
 		return getAccountResponses(accountResponses, accounts);
+	}
+
+	private void establishCommunication() {		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+		HttpEntity<ResponseEntity<List<CategoryResponse>>> categories =
+		restTemplate.exchange("http://localhost:8687/products/category",HttpMethod.GET,
+		entity,ResponseEntity<List<CategoryResponse.class>>).getBody();		
 	}
 
 	private List<AccountResponse> getAccountResponses(List<AccountResponse> accountResponses,
