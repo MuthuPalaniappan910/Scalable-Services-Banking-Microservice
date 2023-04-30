@@ -33,6 +33,7 @@ services:
     environment:
       SERVICE_PRECONDITION: "product-mysql:3306"
       DB_HOST: product-mysql
+      DB_PORT: 3306
     ports:
       - 8687:8687
     depends_on:
