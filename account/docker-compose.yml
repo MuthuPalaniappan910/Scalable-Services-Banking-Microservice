@@ -3,10 +3,8 @@ version: '3.3'
 networks:
   account:
     driver: bridge
-    name: accountnetwork
 
 services:
-
   ### MySQL Container
   mysql:
     build:

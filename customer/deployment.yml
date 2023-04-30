@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: customer-mysql
-          image: docker.io/thamaraikannip/customermysql:0.1
+          image: docker.io/thamaraikannip/customermysql:1.0
           ports:
             - containerPort: 3306
               name: mysql
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: customer-front
-          image: docker.io/thamaraikannip/customer:0.1
+          image: docker.io/thamaraikannip/customerapp:1.0
           ports:
             - containerPort: 9002
           resources:

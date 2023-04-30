@@ -3,7 +3,6 @@ version: '3.3'
 networks:
   product:
     driver: bridge
-    name: productnetwork
 
 services:
 
